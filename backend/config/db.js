@@ -11,7 +11,27 @@
  *       it easy to swap databases (e.g., switch to a local Mongo in testing).
  */
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+
+const removeLegacyAnalysisIndexes = async (conn) => {
+  try {
+    const analysesCollectionExists = await conn.connection.db
+      .listCollections({ name: "analyses" }, { nameOnly: true })
+      .hasNext();
+
+    if (!analysesCollectionExists) return;
+
+    const indexes = await conn.connection.db.collection("analyses").indexes();
+    const hasLegacyResumeIndex = indexes.some((idx) => idx.name === "resume_1");
+
+    if (hasLegacyResumeIndex) {
+      await conn.connection.db.collection("analyses").dropIndex("resume_1");
+      console.log("🧹 Removed legacy analyses index: resume_1");
+    }
+  } catch (err) {
+    console.warn(`Could not clean legacy analyses indexes: ${err.message}`);
+  }
+};
 
 const connectDB = async () => {
   try {
@@ -23,14 +43,15 @@ const connectDB = async () => {
 
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
 
-    mongoose.connection.on('error', (err) => {
-      console.error('MongoDB connection error:', err);
+    await removeLegacyAnalysisIndexes(conn);
+
+    mongoose.connection.on("error", (err) => {
+      console.error("MongoDB connection error:", err);
     });
 
-    mongoose.connection.on('disconnected', () => {
-      console.warn('MongoDB disconnected. Attempting to reconnect...');
+    mongoose.connection.on("disconnected", () => {
+      console.warn("MongoDB disconnected. Attempting to reconnect...");
     });
-
   } catch (error) {
     console.error(`❌ MongoDB connection failed: ${error.message}`);
     process.exit(1);
