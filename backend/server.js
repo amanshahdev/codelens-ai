@@ -36,7 +36,9 @@ connectDB();
 app.use(
   cors({
     origin: [
-      process.env.FRONTEND_URL || "http://localhost:3000",
+      "http://localhost:3000",
+      "http://localhost:3001",
+      process.env.FRONTEND_URL || "https://codelens-ai-one.vercel.app",
       "https://codelens-ai-one.vercel.app",
     ],
     credentials: true,

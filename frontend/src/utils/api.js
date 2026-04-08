@@ -12,24 +12,26 @@
  *       header setup across dozens of component files.
  */
 
-import axios from 'axios';
+import axios from "axios";
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || '/api',
-  headers: { 'Content-Type': 'application/json' },
+  baseURL:
+    process.env.REACT_APP_API_URL || "https://codelens-ai-ia0s.onrender.com/api",
+  headers: { "Content-Type": "application/json" },
   timeout: 30000,
+  withCredentials: true,
 });
 
 // ── Request interceptor: attach JWT ──────────────────────────────────────────
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('cl_token');
+    const token = localStorage.getItem("cl_token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 // ── Response interceptor: handle 401 globally ────────────────────────────────
@@ -38,14 +40,17 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       // Token expired or invalid — clear storage and redirect
-      localStorage.removeItem('cl_token');
-      localStorage.removeItem('cl_user');
-      if (window.location.pathname !== '/login' && window.location.pathname !== '/register') {
-        window.location.href = '/login';
+      localStorage.removeItem("cl_token");
+      localStorage.removeItem("cl_user");
+      if (
+        window.location.pathname !== "/login" &&
+        window.location.pathname !== "/register"
+      ) {
+        window.location.href = "/login";
       }
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;
