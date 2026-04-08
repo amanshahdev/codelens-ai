@@ -39,7 +39,7 @@ app.use(
       process.env.FRONTEND_URL || "http://localhost:3000",
       "https://codelens-ai-one.vercel.app",
     ],
-    credentials: true,
+    credentials: false,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
