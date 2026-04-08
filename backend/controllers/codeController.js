@@ -13,21 +13,24 @@
  *       when the AI service takes several seconds.
  */
 
-const fs = require('fs');
-const path = require('path');
-const CodeSubmission = require('../models/CodeSubmission');
-const Analysis = require('../models/Analysis');
-const User = require('../models/User');
-const { analyzeCode } = require('../config/aiService');
-const { createError } = require('../middleware/errorHandler');
+const fs = require("fs");
+const path = require("path");
+const CodeSubmission = require("../models/CodeSubmission");
+const Analysis = require("../models/Analysis");
+const User = require("../models/User");
+const { analyzeCode } = require("../config/aiService");
+const { createError } = require("../middleware/errorHandler");
 
 // ── Helper: trigger AI analysis (async, non-blocking) ────────────────────────
 async function triggerAnalysis(submission) {
   try {
     // Mark as analyzing
-    submission.status = 'analyzing';
+    submission.status = "analyzing";
     await submission.save();
 
+    console.log(
+      `[Analysis] Starting analysis for submission ${submission._id} (${submission.language})`,
+    );
     const result = await analyzeCode(submission.code, submission.language);
 
     // Create Analysis document
@@ -48,33 +51,40 @@ async function triggerAnalysis(submission) {
 
     // Link analysis back to submission and mark complete
     submission.analysis = analysis._id;
-    submission.status = 'completed';
+    submission.status = "completed";
     await submission.save();
 
     // Update user stats
     const userSubmissions = await CodeSubmission.find({
       user: submission.user,
-      status: 'completed',
-    }).select('_id');
+      status: "completed",
+    }).select("_id");
 
     const analyses = await Analysis.find({
       user: submission.user,
-    }).select('overallScore');
+    }).select("overallScore");
 
-    const avgScore = analyses.length > 0
-      ? Math.round(analyses.reduce((s, a) => s + a.overallScore, 0) / analyses.length)
-      : 0;
+    const avgScore =
+      analyses.length > 0
+        ? Math.round(
+            analyses.reduce((s, a) => s + a.overallScore, 0) / analyses.length,
+          )
+        : 0;
 
     await User.findByIdAndUpdate(submission.user, {
-      'stats.totalSubmissions': userSubmissions.length,
-      'stats.avgScore': avgScore,
-      'stats.lastActive': Date.now(),
+      "stats.totalSubmissions": userSubmissions.length,
+      "stats.avgScore": avgScore,
+      "stats.lastActive": Date.now(),
     });
 
-    console.log(`[Analysis] Completed for submission ${submission._id} — Score: ${result.overallScore}/100`);
+    console.log(
+      `[Analysis] Completed for submission ${submission._id} — Score: ${result.overallScore}/100`,
+    );
   } catch (err) {
-    console.error('[Analysis] Failed for submission', submission._id, err.message);
-    submission.status = 'failed';
+    console.error("[Analysis] Failed for submission", submission._id);
+    console.error("[Analysis] Error:", err.message);
+    console.error("[Analysis] Stack:", err.stack);
+    submission.status = "failed";
     await submission.save();
   }
 }
@@ -85,44 +95,53 @@ exports.submitCode = async (req, res, next) => {
     const { title, description, language, code, tags, isPublic } = req.body;
 
     if (!title || !language) {
-      return next(createError('Title and language are required', 400));
+      return next(createError("Title and language are required", 400));
     }
 
     let finalCode = code;
-    let submissionType = 'snippet';
-    let fileName = '';
-    let filePath = '';
+    let submissionType = "snippet";
+    let fileName = "";
+    let filePath = "";
 
     // If a file was uploaded via multer
     if (req.file) {
-      submissionType = 'file';
+      submissionType = "file";
       fileName = req.file.originalname;
       filePath = req.file.path;
-      finalCode = fs.readFileSync(req.file.path, 'utf-8');
+      finalCode = fs.readFileSync(req.file.path, "utf-8");
     }
 
     if (!finalCode || finalCode.trim().length < 5) {
-      return next(createError('Code content is required and must be at least 5 characters', 400));
+      return next(
+        createError(
+          "Code content is required and must be at least 5 characters",
+          400,
+        ),
+      );
     }
 
     const submission = await CodeSubmission.create({
       user: req.user._id,
       title: title.trim(),
-      description: description ? description.trim() : '',
+      description: description ? description.trim() : "",
       language: language.toLowerCase(),
       code: finalCode,
       submissionType,
       fileName,
       filePath,
-      tags: tags ? (Array.isArray(tags) ? tags : tags.split(',').map((t) => t.trim())) : [],
-      isPublic: isPublic === true || isPublic === 'true',
-      status: 'pending',
+      tags: tags
+        ? Array.isArray(tags)
+          ? tags
+          : tags.split(",").map((t) => t.trim())
+        : [],
+      isPublic: isPublic === true || isPublic === "true",
+      status: "pending",
     });
 
     // Respond immediately — analysis runs in background
     res.status(201).json({
       success: true,
-      message: 'Code submitted successfully. AI analysis is in progress.',
+      message: "Code submitted successfully. AI analysis is in progress.",
       submission: {
         _id: submission._id,
         title: submission.title,
@@ -154,11 +173,11 @@ exports.getSubmissions = async (req, res, next) => {
 
     const [submissions, total] = await Promise.all([
       CodeSubmission.find(filter)
-        .populate('analysis', 'overallScore grade categories summary createdAt')
+        .populate("analysis", "overallScore grade categories summary createdAt")
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
-        .select('-code -filePath'), // exclude heavy fields from list view
+        .select("-code -filePath"), // exclude heavy fields from list view
       CodeSubmission.countDocuments(filter),
     ]);
 
@@ -179,19 +198,19 @@ exports.getSubmissions = async (req, res, next) => {
 exports.getSubmission = async (req, res, next) => {
   try {
     const submission = await CodeSubmission.findById(req.params.id)
-      .populate('analysis')
-      .populate('user', 'name email role');
+      .populate("analysis")
+      .populate("user", "name email role");
 
     if (!submission) {
-      return next(createError('Submission not found', 404));
+      return next(createError("Submission not found", 404));
     }
 
     // Ownership check (reviewers can see all; developers only own)
     if (
-      req.user.role !== 'reviewer' &&
+      req.user.role !== "reviewer" &&
       submission.user._id.toString() !== req.user._id.toString()
     ) {
-      return next(createError('Not authorised to view this submission', 403));
+      return next(createError("Not authorised to view this submission", 403));
     }
 
     res.json({ success: true, submission });
@@ -206,11 +225,11 @@ exports.deleteSubmission = async (req, res, next) => {
     const submission = await CodeSubmission.findById(req.params.id);
 
     if (!submission) {
-      return next(createError('Submission not found', 404));
+      return next(createError("Submission not found", 404));
     }
 
     if (submission.user.toString() !== req.user._id.toString()) {
-      return next(createError('Not authorised to delete this submission', 403));
+      return next(createError("Not authorised to delete this submission", 403));
     }
 
     // Delete linked analysis
@@ -225,7 +244,7 @@ exports.deleteSubmission = async (req, res, next) => {
 
     await submission.deleteOne();
 
-    res.json({ success: true, message: 'Submission deleted successfully' });
+    res.json({ success: true, message: "Submission deleted successfully" });
   } catch (err) {
     next(err);
   }
@@ -237,15 +256,15 @@ exports.reanalyzeSubmission = async (req, res, next) => {
     const submission = await CodeSubmission.findById(req.params.id);
 
     if (!submission) {
-      return next(createError('Submission not found', 404));
+      return next(createError("Submission not found", 404));
     }
 
     if (submission.user.toString() !== req.user._id.toString()) {
-      return next(createError('Not authorised', 403));
+      return next(createError("Not authorised", 403));
     }
 
-    if (submission.status === 'analyzing') {
-      return next(createError('Analysis already in progress', 400));
+    if (submission.status === "analyzing") {
+      return next(createError("Analysis already in progress", 400));
     }
 
     // Delete old analysis if exists
@@ -254,10 +273,10 @@ exports.reanalyzeSubmission = async (req, res, next) => {
       submission.analysis = null;
     }
 
-    submission.status = 'pending';
+    submission.status = "pending";
     await submission.save();
 
-    res.json({ success: true, message: 'Re-analysis started' });
+    res.json({ success: true, message: "Re-analysis started" });
 
     triggerAnalysis(submission).catch(console.error);
   } catch (err) {
@@ -274,16 +293,21 @@ exports.getAllSubmissions = async (req, res, next) => {
 
     const [submissions, total] = await Promise.all([
       CodeSubmission.find()
-        .populate('user', 'name email role')
-        .populate('analysis', 'overallScore grade')
+        .populate("user", "name email role")
+        .populate("analysis", "overallScore grade")
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
-        .select('-code -filePath'),
+        .select("-code -filePath"),
       CodeSubmission.countDocuments(),
     ]);
 
-    res.json({ success: true, submissions, total, pages: Math.ceil(total / limit) });
+    res.json({
+      success: true,
+      submissions,
+      total,
+      pages: Math.ceil(total / limit),
+    });
   } catch (err) {
     next(err);
   }
