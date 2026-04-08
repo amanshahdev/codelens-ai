@@ -12,12 +12,14 @@
  *       theming (e.g. switching accent colour) a single-line change.
  *
  * AESTHETIC: Dark industrial SaaS — deep slate backgrounds, electric cyan accents,
- *            JetBrains Mono for code/numbers, Syne for headings, Inter for body.
+ *            Fira Code for code/numbers, DM Sans for headings, Inter for body.
  */
 
 /* ── Google Fonts are loaded in index.html ── */
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -25,72 +27,73 @@
 
 :root {
   /* ── Colour Palette ─────────────────────────────── */
-  --bg-base:        #07070d;
-  --bg-surface:     #0e0e1a;
-  --bg-elevated:    #13131f;
-  --bg-overlay:     #1a1a2e;
-  --bg-hover:       #1f1f35;
+  --bg-base: #07070d;
+  --bg-surface: #0e0e1a;
+  --bg-elevated: #13131f;
+  --bg-overlay: #1a1a2e;
+  --bg-hover: #1f1f35;
 
-  --border:         #1e1e38;
-  --border-subtle:  #161626;
-  --border-glow:    rgba(0, 212, 255, 0.3);
+  --border: #1e1e38;
+  --border-subtle: #161626;
+  --border-glow: rgba(0, 212, 255, 0.3);
 
-  --accent:         #00d4ff;
-  --accent-dim:     rgba(0, 212, 255, 0.12);
-  --accent-glow:    rgba(0, 212, 255, 0.06);
-  --accent-hover:   #33ddff;
+  --accent: #00d4ff;
+  --accent-dim: rgba(0, 212, 255, 0.12);
+  --accent-glow: rgba(0, 212, 255, 0.06);
+  --accent-hover: #33ddff;
 
-  --green:          #00e5a0;
-  --green-dim:      rgba(0, 229, 160, 0.12);
-  --yellow:         #ffd60a;
-  --yellow-dim:     rgba(255, 214, 10, 0.12);
-  --red:            #ff4d6d;
-  --red-dim:        rgba(255, 77, 109, 0.12);
-  --orange:         #ff8c42;
-  --orange-dim:     rgba(255, 140, 66, 0.12);
-  --purple:         #a855f7;
-  --purple-dim:     rgba(168, 85, 247, 0.12);
+  --green: #00e5a0;
+  --green-dim: rgba(0, 229, 160, 0.12);
+  --yellow: #ffd60a;
+  --yellow-dim: rgba(255, 214, 10, 0.12);
+  --red: #ff4d6d;
+  --red-dim: rgba(255, 77, 109, 0.12);
+  --orange: #ff8c42;
+  --orange-dim: rgba(255, 140, 66, 0.12);
+  --purple: #a855f7;
+  --purple-dim: rgba(168, 85, 247, 0.12);
 
-  --text-primary:   #e8e8f0;
+  --text-primary: #e8e8f0;
   --text-secondary: #8888aa;
-  --text-muted:     #555575;
-  --text-inverse:   #07070d;
+  --text-muted: #555575;
+  --text-inverse: #07070d;
 
   /* ── Typography ─────────────────────────────────── */
-  --font-display:   'Syne', sans-serif;
-  --font-body:      'Inter', sans-serif;
-  --font-mono:      'JetBrains Mono', monospace;
+  --font-display: "DM Sans", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "Fira Code", monospace;
 
   /* ── Spacing ─────────────────────────────────────── */
-  --space-1:  4px;
-  --space-2:  8px;
-  --space-3:  12px;
-  --space-4:  16px;
-  --space-5:  20px;
-  --space-6:  24px;
-  --space-8:  32px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
   --space-10: 40px;
   --space-12: 48px;
   --space-16: 64px;
 
   /* ── Border Radius ───────────────────────────────── */
-  --radius-sm:  6px;
-  --radius-md:  10px;
-  --radius-lg:  16px;
-  --radius-xl:  24px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
   --radius-full: 9999px;
 
   /* ── Shadows ─────────────────────────────────────── */
-  --shadow-sm:    0 1px 3px rgba(0,0,0,0.4);
-  --shadow-md:    0 4px 16px rgba(0,0,0,0.5);
-  --shadow-lg:    0 8px 32px rgba(0,0,0,0.6);
-  --shadow-glow:  0 0 20px rgba(0, 212, 255, 0.15);
-  --shadow-card:  0 2px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.03);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 20px rgba(0, 212, 255, 0.15);
+  --shadow-card:
+    0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.03);
 
   /* ── Transitions ─────────────────────────────────── */
-  --transition-fast:   150ms ease;
+  --transition-fast: 150ms ease;
   --transition-normal: 250ms ease;
-  --transition-slow:   400ms ease;
+  --transition-slow: 400ms ease;
 
   /* ── Layout ──────────────────────────────────────── */
   --sidebar-width: 260px;
@@ -103,6 +106,7 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
@@ -110,6 +114,8 @@ body {
   background-color: var(--bg-base);
   color: var(--text-primary);
   line-height: 1.6;
+  font-weight: 400;
+  letter-spacing: -0.2px;
   min-height: 100vh;
   overflow-x: hidden;
 }
@@ -121,42 +127,111 @@ body {
 }
 
 /* ── Typography ──────────────────────────────────────────────────────────────── */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.2;
   color: var(--text-primary);
+  letter-spacing: -0.5px;
 }
 
-h1 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
-h2 { font-size: clamp(1.4rem, 3vw, 2rem); }
-h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); }
-h4 { font-size: 1.1rem; }
+h1 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+}
+h2 {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 700;
+}
+h3 {
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  font-weight: 600;
+}
+h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
 
-p { line-height: 1.7; color: var(--text-secondary); }
+p {
+  line-height: 1.7;
+  color: var(--text-secondary);
+  font-weight: 400;
+  letter-spacing: -0.1px;
+}
 
 a {
   color: var(--accent);
   text-decoration: none;
-  transition: color var(--transition-fast);
+  transition:
+    color var(--transition-fast),
+    text-decoration var(--transition-fast);
+  position: relative;
 }
-a:hover { color: var(--accent-hover); }
+a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
 
-code, pre, .mono {
+code,
+pre,
+.mono {
   font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.95em;
+  letter-spacing: 0px;
+}
+
+code {
+  background: var(--bg-elevated);
+  color: var(--accent);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+}
+
+pre {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  overflow-x: auto;
+  line-height: 1.5;
 }
 
 /* ── Scrollbar ───────────────────────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--bg-base); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: var(--radius-full); }
-::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-base);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
 
 /* ── Utility Classes ─────────────────────────────────────────────────────────── */
 .sr-only {
-  position: absolute; width: 1px; height: 1px;
-  padding: 0; margin: -1px; overflow: hidden;
-  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .truncate {
@@ -165,68 +240,138 @@ code, pre, .mono {
   white-space: nowrap;
 }
 
-.mono { font-family: var(--font-mono); }
-.display { font-family: var(--font-display); }
+.mono {
+  font-family: var(--font-mono);
+}
+.display {
+  font-family: var(--font-display);
+}
 
 /* ── Keyframe Animations ─────────────────────────────────────────────────────── */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-20px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.5; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes shimmer {
-  0%   { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @keyframes glow {
-  0%, 100% { box-shadow: 0 0 8px rgba(0,212,255,0.3); }
-  50%       { box-shadow: 0 0 24px rgba(0,212,255,0.6); }
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(0, 212, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(0, 212, 255, 0.6);
+  }
 }
 
 @keyframes scanline {
-  from { transform: translateY(-100%); }
-  to   { transform: translateY(100vh); }
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(100vh);
+  }
 }
 
 @keyframes countUp {
-  from { opacity: 0; transform: scale(0.8); }
-  to   { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* ── Global Animation Helpers ────────────────────────────────────────────────── */
-.animate-fade-in        { animation: fadeIn 0.4s ease both; }
-.animate-fade-in-up     { animation: fadeInUp 0.5s ease both; }
-.animate-slide-in-left  { animation: slideInLeft 0.4s ease both; }
-.animate-pulse          { animation: pulse 2s ease infinite; }
-.animate-spin           { animation: spin 1s linear infinite; }
-.animate-glow           { animation: glow 2s ease infinite; }
+.animate-fade-in {
+  animation: fadeIn 0.4s ease both;
+}
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease both;
+}
+.animate-slide-in-left {
+  animation: slideInLeft 0.4s ease both;
+}
+.animate-pulse {
+  animation: pulse 2s ease infinite;
+}
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+.animate-glow {
+  animation: glow 2s ease infinite;
+}
 
 /* ── Stagger delays ──────────────────────────────────────────────────────────── */
-.delay-1 { animation-delay: 0.05s; }
-.delay-2 { animation-delay: 0.10s; }
-.delay-3 { animation-delay: 0.15s; }
-.delay-4 { animation-delay: 0.20s; }
-.delay-5 { animation-delay: 0.25s; }
+.delay-1 {
+  animation-delay: 0.05s;
+}
+.delay-2 {
+  animation-delay: 0.1s;
+}
+.delay-3 {
+  animation-delay: 0.15s;
+}
+.delay-4 {
+  animation-delay: 0.2s;
+}
+.delay-5 {
+  animation-delay: 0.25s;
+}
 
 /* ── Loading Skeleton ────────────────────────────────────────────────────────── */
 .skeleton {
@@ -242,55 +387,104 @@ code, pre, .mono {
 }
 
 /* ── Status Badge Colors ─────────────────────────────────────────────────────── */
-.badge-pending   { background: var(--yellow-dim); color: var(--yellow); }
-.badge-analyzing { background: var(--accent-dim); color: var(--accent); }
-.badge-completed { background: var(--green-dim);  color: var(--green); }
-.badge-failed    { background: var(--red-dim);    color: var(--red); }
+.badge-pending {
+  background: var(--yellow-dim);
+  color: var(--yellow);
+}
+.badge-analyzing {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+.badge-completed {
+  background: var(--green-dim);
+  color: var(--green);
+}
+.badge-failed {
+  background: var(--red-dim);
+  color: var(--red);
+}
 
 /* ── Severity Colors ─────────────────────────────────────────────────────────── */
-.severity-critical   { color: var(--red);    background: var(--red-dim); }
-.severity-warning    { color: var(--yellow); background: var(--yellow-dim); }
-.severity-info       { color: var(--accent); background: var(--accent-dim); }
-.severity-suggestion { color: var(--purple); background: var(--purple-dim); }
+.severity-critical {
+  color: var(--red);
+  background: var(--red-dim);
+}
+.severity-warning {
+  color: var(--yellow);
+  background: var(--yellow-dim);
+}
+.severity-info {
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+.severity-suggestion {
+  color: var(--purple);
+  background: var(--purple-dim);
+}
 
 /* ── Score Grade Colors ──────────────────────────────────────────────────────── */
-.grade-A { color: var(--green);  }
-.grade-B { color: var(--accent); }
-.grade-C { color: var(--yellow); }
-.grade-D { color: var(--orange); }
-.grade-F { color: var(--red);    }
+.grade-A {
+  color: var(--green);
+}
+.grade-B {
+  color: var(--accent);
+}
+.grade-C {
+  color: var(--yellow);
+}
+.grade-D {
+  color: var(--orange);
+}
+.grade-F {
+  color: var(--red);
+}
 
 /* ── Form base styles ────────────────────────────────────────────────────────── */
-input, textarea, select {
+input,
+textarea,
+select {
   font-family: var(--font-body);
   font-size: 0.9rem;
+  font-weight: 400;
   color: var(--text-primary);
   background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: var(--space-3) var(--space-4);
   outline: none;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background var(--transition-fast);
   width: 100%;
+  letter-spacing: -0.1px;
 }
 
-input:focus, textarea:focus, select:focus {
+input:focus,
+textarea:focus,
+select:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-dim);
+  background: var(--bg-surface);
 }
 
-input::placeholder, textarea::placeholder {
+input::placeholder,
+textarea::placeholder {
   color: var(--text-muted);
+  font-weight: 400;
 }
 
 select option {
   background: var(--bg-elevated);
   color: var(--text-primary);
+  font-weight: 400;
 }
 
 /* ── Button base ─────────────────────────────────────────────────────────────── */
 button {
   font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: -0.2px;
   cursor: pointer;
   border: none;
   outline: none;
