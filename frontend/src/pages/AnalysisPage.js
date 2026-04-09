@@ -70,6 +70,14 @@ const SEVERITY_CONFIG = {
   suggestion: { color: 'var(--purple)', bg: 'var(--purple-dim)', icon: '💡', label: 'Suggestion' },
 };
 
+const scoreColor = (value) => {
+  const v = Number(value) || 0;
+  if (v >= 80) return 'var(--green)';
+  if (v >= 60) return 'var(--accent)';
+  if (v >= 40) return 'var(--yellow)';
+  return 'var(--red)';
+};
+
 export default function AnalysisPage() {
   const { submissionId } = useParams();
   const navigate = useNavigate();
@@ -282,7 +290,13 @@ export default function AnalysisPage() {
                       { key: 'maintainability', label: 'Maintainability' },
                       { key: 'bestPractices',   label: 'Best Practices' },
                     ].map(({ key, label }) => (
-                      <ProgressBar key={key} label={label} value={analysis.categories?.[key] || 0} height={10} />
+                      <ProgressBar
+                        key={key}
+                        label={label}
+                        value={analysis.categories?.[key] || 0}
+                        color={scoreColor(analysis.categories?.[key])}
+                        height={10}
+                      />
                     ))}
                   </div>
                 </Card>

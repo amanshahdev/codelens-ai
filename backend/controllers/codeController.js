@@ -20,6 +20,7 @@ const Analysis = require("../models/Analysis");
 const User = require("../models/User");
 const { analyzeCode } = require("../config/aiService");
 const { createError } = require("../middleware/errorHandler");
+const { isLikelyCode } = require("../utils/codeValidation");
 
 // ── Helper: trigger AI analysis (async, non-blocking) ────────────────────────
 async function triggerAnalysis(submission) {
@@ -118,6 +119,17 @@ exports.submitCode = async (req, res, next) => {
           400,
         ),
       );
+    }
+
+    const validation = isLikelyCode(
+      finalCode,
+      (language || "other").toLowerCase(),
+    );
+    if (!validation.isCode) {
+      if (req.file?.path && fs.existsSync(req.file.path)) {
+        fs.unlinkSync(req.file.path);
+      }
+      return next(createError(validation.reason, 400));
     }
 
     const submission = await CodeSubmission.create({

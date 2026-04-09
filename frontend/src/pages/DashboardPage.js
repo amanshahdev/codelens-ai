@@ -28,6 +28,14 @@ const LANG_COLORS = {
   cpp: '#00599c', other: '#8888aa',
 };
 
+const scoreColor = (value) => {
+  const v = Number(value) || 0;
+  if (v >= 80) return 'var(--green)';
+  if (v >= 60) return 'var(--accent)';
+  if (v >= 40) return 'var(--yellow)';
+  return 'var(--red)';
+};
+
 export default function DashboardPage() {
   const { user } = useAuth();
   const [stats, setStats] = useState(null);
@@ -170,6 +178,7 @@ export default function DashboardPage() {
                 key={key}
                 label={label}
                 value={stats.avgCategories?.[key] || 0}
+                color={scoreColor(stats.avgCategories?.[key])}
                 height={8}
               />
             ))}
